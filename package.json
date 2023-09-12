@@ -1,0 +1,21 @@
+{
+    "name": "petty-kingdoms-js13k-2023",
+    "version": "1.0.0",
+    "description": "Petty kingdoms - js13k 2023 game",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build-js": "node ./config/build-js.js",
+        "build-html": "node ./config/build-html.js",
+        "zip": "node ./config/zip.js",
+        "build": "npm run build-js && npm run build-html && npm run zip"
+    },
+    "author": "Marcin Walczak",
+    "license": "ISC",
+    "devDependencies": {
+        "archiver": "^6.0.0",
+        "concat-files": "^0.1.1",
+        "html-minifier-terser": "^7.2.0",
+        "roadroller": "^2.1.0",
+        "terser": "^5.19.3"
+    }
+}
