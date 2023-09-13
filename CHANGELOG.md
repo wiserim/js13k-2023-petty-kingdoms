@@ -1,6 +1,6 @@
 # Change Log
 
-## Version 1.0.1 - 2023.09.12
+## Version 1.0.1 - 2023.09.13
 
 ### Bub fixes
 
