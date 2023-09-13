@@ -96,14 +96,13 @@ function aiAttack(region, army) {
     result = calculateBattle(army, defArmy, attAdvantageMultiplier/10, defAdvantageMultiplier/10);
 
     region.army = result.defArmy;
-    //activeRegion.army -= result.attArmy;
+    activeRegion.army -= army;
+    activeRegion.blockedArmy -= army;
 
-    if(region.army < 1 && army > 0) {
+    if(region.army < 1 && result.attArmy > 0) {
         region.owner = activePlayer;
         region.army = result.attArmy;
         region.blockedArmy = result.attArmy;
-
-        activeRegion.army -= result.attArmy;
 
         if(defPlayer) {
             defPlayer.active = defPlayer.regions.length ? 1 : 0
@@ -111,8 +110,8 @@ function aiAttack(region, army) {
         }
     }
     else {
-        activeRegion.army -= result.attArmy;
-        activeRegion.blockedArmy -= result.attArmy;
+        activeRegion.army += result.attArmy;
+        activeRegion.blockedArmy += result.attArmy;
     }
 
     updateRegionUi();
