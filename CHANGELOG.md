@@ -5,6 +5,7 @@
 ### Bub fixes
 
 * `aiAttack` function doesn't subtract properly attacking army from region of origin.
+* `genetateMap` function sort `regionsPool` incorrectly.
 
 ---
 

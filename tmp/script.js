@@ -876,7 +876,7 @@ function genetateMap() {
     //clear regions array
     regions.splice(0,regions.length);
     //sort regions pool
-    regionsPool.sort((a,b) => a.id < b.id)
+    regionsPool.sort((a,b) => a.id > b.id)
 
     mapArray = Array(mapSize.x);
     for (let i = 0; i < mapArray.length; i++) {
