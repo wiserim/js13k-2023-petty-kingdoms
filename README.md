@@ -4,6 +4,7 @@ Entry for js13kGames 2023
 ### Links
 * js13kGames 2023 entry: https://js13kgames.com/entries/petty-kingdoms
 * Itch.io: https://wiserim.itch.io/petty-kingdoms
+* Newgrounds: https://www.newgrounds.com/portal/view/5317698
 
 ### Description
 Take control over one of 4 kingdoms and unite the land under your rule.
