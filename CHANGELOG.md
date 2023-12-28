@@ -1,5 +1,13 @@
 # Change Log
 
+## Version 1.1.0 - 2023.09.13
+
+### Updates
+
+* Slight tweaks to UI styling.
+
+---
+
 ## Version 1.0.1 - 2023.09.13
 
 ### Bub fixes

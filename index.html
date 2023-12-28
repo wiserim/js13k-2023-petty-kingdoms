@@ -9,7 +9,9 @@
         <style>
             * {box-sizing: border-box; font-family: 'Segoe Print','Brush Script MT', cursive}
             body {margin: 0}
+            p {margin: 0}
             .d-none {display: none !important}
+            .mb-5 {margin-bottom: .5rem;}
             .disabled {pointer-events: none}
             .t-center {text-align: center}
             .jc-sb {justify-content: space-between}
@@ -49,7 +51,8 @@
             #game-screen {display: flex; justify-content: center; align-items: center;}
             #toggle-fullscreen {width: 30px; height: 30px; background: transparent; position: fixed; bottom: 15px; right: 15px; z-index:2}
             #side-panel {height: 100vh; flex: 400px 0 1; padding: 1rem; overflow: auto;}
-            .panel-section {display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; margin: .75rem 0}
+            .panel-section {display: flex; flex-wrap: wrap; align-items: center; gap: .75rem}
+            * + .panel-section {margin-top: .5rem}
 
             h1 {font-size: clamp(2rem, 0.9615rem + 4.6154vw, 5rem); margin: 0 0 2rem}
 
@@ -250,12 +253,12 @@
                 <div class="modal-content t-center">
                     <h2 class=t-center>Battle of <span id=battle-region></span></h2>
                     <div class="row">
-                        <p><b>Attacker:</b><br/><span id=att-name></span></p>
-                        <p><b>Defender:</b><br/><span id=def-name></span></p>
+                        <p class="mb-5"><b>Attacker:</b><br/><span id=att-name></span></p>
+                        <p class="mb-5"><b>Defender:</b><br/><span id=def-name></span></p>
                     </div>
-                    <div class="row">
+                    <div class="row mb-5">
                         <div>
-                            <p><b>Army:</b> <span id=att-army></span></p>
+                            <p class="mb-5"><b>Army:</b> <span id=att-army></span></p>
                             <svg id=att-dice class=dice width=100 height=100 version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" data-value=1 >
                                 <rect width=100 height=100 rx=15 />
                                 <circle class=d1 cx=25 cy=25 r=10 />
@@ -269,7 +272,7 @@
                             <p id=att-advantage>&nbsp;</p>
                         </div>
                         <div>
-                            <p><b>Army:</b> <span id=def-army></span></p>
+                            <p class="mb-5"><b>Army:</b> <span id=def-army></span></p>
                             <svg id=def-dice class=dice width=100 height=100 version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" data-value=1 >
                                 <rect width=100 height=100 rx=15 />
                                 <circle class=d1 cx=25 cy=25 r=10 />
@@ -283,7 +286,7 @@
                             <p id=def-advantage>&nbsp;</p>
                         </div>
                     </div>
-                    <p><b id=battle-result></b></p>
+                    <p class="mb-5"><b id=battle-result></b></p>
                     <button id=battle-modal-close-btn class=btn>Close</button>
                 </div>
             </div>
