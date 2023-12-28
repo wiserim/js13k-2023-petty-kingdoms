@@ -1,5 +1,5 @@
 # Petty kingdoms - js13kGames 2023
-Entry for js13kGames 2023
+Entry for js13kGames 2023 (theme: 13th Century).
 
 ### Links
 * js13kGames 2023 entry: https://js13kgames.com/entries/petty-kingdoms
