@@ -224,6 +224,7 @@ function enableSendArmy() {
     
     sendArmyFlag = 1;
     attr(map, 'data-send-army', 1);
+    c(regionSendArmyBtn, 'd-none');
     c(regionSendArmyCancelBtn, 'd-none', 1);
     for(let region of regions) {
         region === activeRegion || activeRegion.neighbours.has(region) ? attr(region.territory, 'data-target', 1) : 0
@@ -239,6 +240,7 @@ function enableSendArmy() {
 function disableSendArmy() {
     sendArmyFlag = 0;
     attr(map, 'data-send-army', 0);
+    c(regionSendArmyBtn, 'd-none', 1);
     c(regionSendArmyCancelBtn, 'd-none');
     for(let region of regions) {
         attr(region.territory, 'data-target', 0)
@@ -742,6 +744,10 @@ class Player {
  * Start AI control for computer player. Invoked on start of turn.
  */
 function aiStart() {
+    if(pause) {
+        return;
+    }
+
     let p = activePlayer,
         regions = shuffle(p.regions);
 
@@ -789,6 +795,10 @@ function aiStart() {
  * End AI control for computer player.
  */
 function aiEnd() {
+    if(pause) {
+        return;
+    }
+    
     let p = activePlayer,
         regions = shuffle(p.regions)
 
@@ -1246,6 +1256,9 @@ function startGame() {
     playerIndex = 0;
     activePlayer = players[0];
     turn = 1;
+    pause = 0;
+    //enable ui
+    c(sidePanel, 'disabled', 1);
     attr(map, 'data-player', activePlayer.id)
     updatePlayerUi();
 
@@ -1313,6 +1326,29 @@ function calculateBattle(attArmy, defArmy, attAdvantage, defAdvantage) {
     }
 }
 
+/**
+ * @function
+ * @name startPause
+ * 
+ * Pause game
+ */
+function startPause() {
+    pause = 1;
+}
+
+/**
+ * @function
+ * @name endPause
+ * 
+ * End game pause
+ */
+function endPause() {
+    pause = 0;
+
+    if(activePlayer.ai && players.filter(player => player.active).length > 1) {
+        aiStart();
+    }
+}
 
 /**
  * @function
@@ -1338,6 +1374,7 @@ function checkWinCondition() {
  */
 function endGame() {
     closeModal(gameEndModal)
+    closeModal(menuModal)
     c(menuScreen, 'd-none', 1)
     c(gameScreen, 'd-none')
 }
@@ -1544,6 +1581,34 @@ let /**
     */
     fullscreenBtn = el('#toggle-fullscreen'),
     /**
+    * @name menuBtn
+    * @type {HTMLElement}
+    * 
+    * Menu modal toggle button
+    */
+    menuBtn = el('#toggle-menu'),
+    /**
+    * @name menuModal
+    * @type {HTMLElement}
+    * 
+    * Game end modal
+    */
+    menuModal =  el('#menu-modal'),
+    /**
+    * @name menuEndBtn
+    * @type {HTMLElement}
+    * 
+    * Menu modal button ending game
+    */
+    menuEndBtn = el('#menu-end-btn'),
+    /**
+    * @name menuResumeBtn
+    * @type {HTMLElement}
+    * 
+    * Menu modal button resuming game
+    */
+    menuResumeBtn = el('#menu-resume-btn'),
+    /**
     * @name gameEndModal
     * @type {HTMLElement}
     * 
@@ -1704,6 +1769,13 @@ let /**
     */
     turn = 1,
     /**
+    * @name pause
+    * @type {number}
+    * 
+    * Is game paused
+    */
+    pause = 0,
+    /**
     * @name activeRegion
     * @type {Region|null}
     * 
@@ -1725,14 +1797,14 @@ let /**
  */ 
 function init() {
     //add event listeners
-    on(fullscreenBtn, 'click', toggleFullScreen);
+    on(fullscreenBtn, 'click', toggleFullScreen)
 
     on(startGameBtn, 'click', startGame);
     for(let el of gameOptionsPlayerBtns) {
         on(el, 'click', () => updateGameOptionsPlayerBtn(el));
     }
 
-    on(gameOptionsMapBtn, 'click', () => updateGameOptionsMapBtn(gameOptionsMapBtn));
+    on(gameOptionsMapBtn, 'click', () => updateGameOptionsMapBtn(gameOptionsMapBtn))
 
     on(regionBuyArmyInput, 'input', (e) => txt(regionBuyArmyAmount, e.target.value))
     on(regionBuyArmyBtn, 'click', recruit)
@@ -1745,7 +1817,12 @@ function init() {
 
     on(gameEndBtn, 'click', endGame)
 
-    on(battleModalCloseBtn, 'click', closeBattleModal);
+    on(battleModalCloseBtn, 'click', closeBattleModal)
+
+    on(menuBtn, 'click', () => {openModal(menuModal); startPause()})
+
+    on(menuEndBtn, 'click', endGame)
+    on(menuResumeBtn, 'click', () => {closeModal(menuModal); endPause()})
 
     generateRegionNames();
 }

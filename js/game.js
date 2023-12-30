@@ -32,6 +32,9 @@ function startGame() {
     playerIndex = 0;
     activePlayer = players[0];
     turn = 1;
+    pause = 0;
+    //enable ui
+    c(sidePanel, 'disabled', 1);
     attr(map, 'data-player', activePlayer.id)
     updatePlayerUi();
 
@@ -99,6 +102,29 @@ function calculateBattle(attArmy, defArmy, attAdvantage, defAdvantage) {
     }
 }
 
+/**
+ * @function
+ * @name startPause
+ * 
+ * Pause game
+ */
+function startPause() {
+    pause = 1;
+}
+
+/**
+ * @function
+ * @name endPause
+ * 
+ * End game pause
+ */
+function endPause() {
+    pause = 0;
+
+    if(activePlayer.ai && players.filter(player => player.active).length > 1) {
+        aiStart();
+    }
+}
 
 /**
  * @function
@@ -124,6 +150,7 @@ function checkWinCondition() {
  */
 function endGame() {
     closeModal(gameEndModal)
+    closeModal(menuModal)
     c(menuScreen, 'd-none', 1)
     c(gameScreen, 'd-none')
 }

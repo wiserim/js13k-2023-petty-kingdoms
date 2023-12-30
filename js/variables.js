@@ -201,6 +201,34 @@ let /**
     */
     fullscreenBtn = el('#toggle-fullscreen'),
     /**
+    * @name menuBtn
+    * @type {HTMLElement}
+    * 
+    * Menu modal toggle button
+    */
+    menuBtn = el('#toggle-menu'),
+    /**
+    * @name menuModal
+    * @type {HTMLElement}
+    * 
+    * Game end modal
+    */
+    menuModal =  el('#menu-modal'),
+    /**
+    * @name menuEndBtn
+    * @type {HTMLElement}
+    * 
+    * Menu modal button ending game
+    */
+    menuEndBtn = el('#menu-end-btn'),
+    /**
+    * @name menuResumeBtn
+    * @type {HTMLElement}
+    * 
+    * Menu modal button resuming game
+    */
+    menuResumeBtn = el('#menu-resume-btn'),
+    /**
     * @name gameEndModal
     * @type {HTMLElement}
     * 
@@ -360,6 +388,13 @@ let /**
     * Current turn
     */
     turn = 1,
+    /**
+    * @name pause
+    * @type {number}
+    * 
+    * Is game paused
+    */
+    pause = 0,
     /**
     * @name activeRegion
     * @type {Region|null}
