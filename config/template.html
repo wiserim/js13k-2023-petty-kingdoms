@@ -27,6 +27,7 @@
             .btn:before {content: ''; display: block; width: 100%; height: 100%; background: #fffef0; box-shadow: 0 0 1rem #8f5922 inset; position: absolute; top: 0; left: 0; z-index: -1; filter: url(#distortion-btn)}
             .btn:after {content: ''; display: block; width: 3rem; height: 3rem; background: #A52A2A; border: 3px solid rgba(0,0,0,.3); border-radius: 50%; box-shadow: 1px 1px 3px rgba(0,0,0,.6), 0 0 1.5rem rgba(0,0,0,.4) inset; position: absolute; top: 50%; left:0; transform: translate(-50%, -50%); filter: url(#distortion-btn)}
             .btn:is(:hover,:focus) {filter: drop-shadow(3px 1px 3px rgba(0,0,0,.6)); outline: none}
+            .btn-wide {width: calc(100% - 2rem)}
             /*button style end*/
 
             /*range style*/
@@ -45,13 +46,17 @@
             .screen-container {height: 100vh; overflow: auto;}
             .screen {min-height: 100vh;}
             #menu-screen {display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center}
+            #menu-screen p {margin: .5rem 0}
             #msm {display: flex; flex-direction: column; justify-content: center; align-items: center; flex: 1 0 auto}
             #msf {padding: 1rem}
-            #game-screen {display: flex; justify-content: center; align-items: center;}
             #toggle-fullscreen {width: 30px; height: 30px; background: transparent; position: fixed; bottom: 15px; right: 15px; z-index:2}
-            #side-panel {height: 100vh; flex: 400px 0 1; padding: 1rem; overflow: auto;}
+            #game-screen {display: grid; grid-template-columns: 1fr 400; grid-template-rows: 60px 1fr; width: min(100vw, calc(100vh + 400px)); margin: auto}
+            #map-section {display: flex; align-items: center; grid-column: 1; grid-row: 1 / span 2;}
+            #menu-section {grid-column: 2; grid-row: 1; justify-content: flex-end; padding: .5rem;}
+            #side-panel {height: calc(100vh - 60px); padding: .5rem; overflow: auto; grid-column: 2; grid-row: 2;}
             .panel-section {display: flex; flex-wrap: wrap; align-items: center; gap: .75rem}
             * + .panel-section {margin-top: .5rem}
+            .panel-section .btn {min-width: 140px}
 
             h1 {font-size: clamp(2rem, 0.9615rem + 4.6154vw, 5rem); margin: 0 0 2rem}
 
@@ -65,7 +70,7 @@
             #go-p4-btn:after {background: #FFFF00}
 
             /*map style*/
-            #map-container {position: relative}
+            #map-container {position: relative; flex: 1 1 100%;}
             #map {display: block; aspect-ratio: 1; max-width: 100%; height: auto; max-height: 100vh; filter: url(#distortion-map)}
             .region {stroke: black; stroke-width: 1; stroke-linejoin: round; stroke-linecap: round; paint-order: stroke; position: relative; transition: .2s}
             #map[data-player='1'] .region[data-player='1'],
@@ -112,7 +117,7 @@
             .dice[data-value='6'] circle:is(.d4) {fill: transparent}
 
             @media only screen and (orientation: portrait) {
-                #game-screen {flex-direction: column; justify-content: normal; align-items: normal}
+                #game-screen {display: block;}
                 #map {width: 100vw; max-height: 100vw}
                 #side-panel {height: auto; flex: auto}
             }
@@ -177,11 +182,18 @@
                 <!--menu screen end-->
                 <!--game screen-->
                 <div id=game-screen class="screen d-none">
+                    <!-- section-->
+                    <div id=menu-section class=panel-section>
+                        <button class="btn" id=toggle-menu>Menu</button>
+                    </div>
+                    <!--menu section end-->
                     <!--map-->
-                    <div id=map-container>
-                        <svg id=map width=100vh height=100vh viewBox="0 0 320 320" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                            <use id=map-active-region xlink:href=''/>
-                        </svg>
+                    <div id=map-section>
+                        <div id=map-container>
+                            <svg id=map width=100vh height=100vh viewBox="0 0 320 320" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <use id=map-active-region xlink:href=''/>
+                            </svg>
+                        </div>
                     </div>
                     <!--map end-->
                     <!--side panel-->
@@ -236,6 +248,18 @@
             <!--toggle fullscreen end-->
         </div>
 
+        <!--menu modal-->
+        <div id=menu-modal class="modal t-center">
+            <div class="modal-body">
+                <div class="modal-content">
+                    <p class=mb-5><b>Menu</b></p>
+                    <button id=menu-end-btn class="btn btn-wide">End game</button>
+                    <button id=menu-restart-btn class="btn btn-wide">Restart</button>
+                    <button id=menu-resume-btn class="btn btn-wide">Resume</button>
+                </div>
+            </div>
+        </div>
+        <!--menu modal end-->
         <!--game end modal-->
         <div id=game-end-modal class="modal t-center">
             <div class="modal-body">
@@ -252,12 +276,12 @@
                 <div class="modal-content t-center">
                     <h2 class=t-center>Battle of <span id=battle-region></span></h2>
                     <div class="row">
-                        <p class="mb-5"><b>Attacker:</b><br/><span id=att-name></span></p>
-                        <p class="mb-5"><b>Defender:</b><br/><span id=def-name></span></p>
+                        <p class=mb-5><b>Attacker:</b><br/><span id=att-name></span></p>
+                        <p class=mb-5><b>Defender:</b><br/><span id=def-name></span></p>
                     </div>
                     <div class="row mb-5">
                         <div>
-                            <p class="mb-5"><b>Army:</b> <span id=att-army></span></p>
+                            <p class=mb-5><b>Army:</b> <span id=att-army></span></p>
                             <svg id=att-dice class=dice width=100 height=100 version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" data-value=1 >
                                 <rect width=100 height=100 rx=15 />
                                 <circle class=d1 cx=25 cy=25 r=10 />
@@ -271,7 +295,7 @@
                             <p id=att-advantage>&nbsp;</p>
                         </div>
                         <div>
-                            <p class="mb-5"><b>Army:</b> <span id=def-army></span></p>
+                            <p class=mb-5><b>Army:</b> <span id=def-army></span></p>
                             <svg id=def-dice class=dice width=100 height=100 version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" data-value=1 >
                                 <rect width=100 height=100 rx=15 />
                                 <circle class=d1 cx=25 cy=25 r=10 />
@@ -285,7 +309,7 @@
                             <p id=def-advantage>&nbsp;</p>
                         </div>
                     </div>
-                    <p class="mb-5"><b id=battle-result></b></p>
+                    <p class=mb-5><b id=battle-result></b></p>
                     <button id=battle-modal-close-btn class=btn>Close</button>
                 </div>
             </div>
