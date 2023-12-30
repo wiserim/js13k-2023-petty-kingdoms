@@ -798,7 +798,7 @@ function aiEnd() {
     if(pause) {
         return;
     }
-    
+
     let p = activePlayer,
         regions = shuffle(p.regions)
 
@@ -834,6 +834,10 @@ function aiEnd() {
  * @param {number} army - Attacking army size
  */
 function aiAttack(region, army) {
+    if(pause) {
+        return;
+    }
+    
     let defArmy = region.army,
     defPlayer = region.player,
     attFactor = rand(1, 6),
