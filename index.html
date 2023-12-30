@@ -118,9 +118,6 @@
             .dice[data-value='6'] circle:is(.d4) {fill: transparent}
 
             @media only screen and (orientation: portrait) {
-                /*
-                #game-screen {flex-direction: column; justify-content: normal; align-items: normal}
-                */
                 #game-screen {display: block;}
                 #map {width: 100vw; max-height: 100vw}
                 #side-panel {height: auto; flex: auto}
@@ -256,7 +253,9 @@
         <div id=menu-modal class="modal t-center">
             <div class="modal-body">
                 <div class="modal-content">
+                    <p class=mb-5><b>Menu</b></p>
                     <button id=menu-end-btn class="btn btn-wide">End game</button>
+                    <button id=menu-restart-btn class="btn btn-wide">Restart</button>
                     <button id=menu-resume-btn class="btn btn-wide">Resume</button>
                 </div>
             </div>

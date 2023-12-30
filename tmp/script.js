@@ -1602,6 +1602,13 @@ let /**
     */
     menuEndBtn = el('#menu-end-btn'),
     /**
+    * @name menuRestartBtn
+    * @type {HTMLElement}
+    * 
+    * Menu modal button restarting game
+    */
+    menuRestartBtn = el('#menu-restart-btn'),
+    /**
     * @name menuResumeBtn
     * @type {HTMLElement}
     * 
@@ -1822,6 +1829,7 @@ function init() {
     on(menuBtn, 'click', () => {openModal(menuModal); startPause()})
 
     on(menuEndBtn, 'click', endGame)
+    on(menuRestartBtn, 'click', () => {closeModal(menuModal); startGame()});
     on(menuResumeBtn, 'click', () => {closeModal(menuModal); endPause()})
 
     generateRegionNames();

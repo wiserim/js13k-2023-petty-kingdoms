@@ -222,6 +222,13 @@ let /**
     */
     menuEndBtn = el('#menu-end-btn'),
     /**
+    * @name menuRestartBtn
+    * @type {HTMLElement}
+    * 
+    * Menu modal button restarting game
+    */
+    menuRestartBtn = el('#menu-restart-btn'),
+    /**
     * @name menuResumeBtn
     * @type {HTMLElement}
     * 

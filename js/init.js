@@ -31,6 +31,7 @@ function init() {
     on(menuBtn, 'click', () => {openModal(menuModal); startPause()})
 
     on(menuEndBtn, 'click', endGame)
+    on(menuRestartBtn, 'click', () => {closeModal(menuModal); startGame()});
     on(menuResumeBtn, 'click', () => {closeModal(menuModal); endPause()})
 
     generateRegionNames();
