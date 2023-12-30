@@ -4,7 +4,7 @@ Entry for js13kGames 2023 (theme: 13th Century).
 ### Links
 * js13kGames 2023 entry: https://js13kgames.com/entries/petty-kingdoms
 * Itch.io: https://wiserim.itch.io/petty-kingdoms
-* Newgrounds: https://www.newgrounds.com/portal/view/5317698
+* Newgrounds: https://www.newgrounds.com/portal/view/912248
 
 ### Description
 Take control over one of 4 kingdoms and unite the land under your rule.
