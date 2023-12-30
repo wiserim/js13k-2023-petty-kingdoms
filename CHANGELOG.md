@@ -1,6 +1,11 @@
 # Change Log
 
-## Version 1.1.0 - 2023.09.13
+## Version 1.1.0
+
+### Features
+
+* Added game menu modal.
+* Added end game button.
 
 ### Updates
 

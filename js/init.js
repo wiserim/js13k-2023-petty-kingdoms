@@ -6,14 +6,14 @@
  */ 
 function init() {
     //add event listeners
-    on(fullscreenBtn, 'click', toggleFullScreen);
+    on(fullscreenBtn, 'click', toggleFullScreen)
 
     on(startGameBtn, 'click', startGame);
     for(let el of gameOptionsPlayerBtns) {
         on(el, 'click', () => updateGameOptionsPlayerBtn(el));
     }
 
-    on(gameOptionsMapBtn, 'click', () => updateGameOptionsMapBtn(gameOptionsMapBtn));
+    on(gameOptionsMapBtn, 'click', () => updateGameOptionsMapBtn(gameOptionsMapBtn))
 
     on(regionBuyArmyInput, 'input', (e) => txt(regionBuyArmyAmount, e.target.value))
     on(regionBuyArmyBtn, 'click', recruit)
@@ -26,7 +26,12 @@ function init() {
 
     on(gameEndBtn, 'click', endGame)
 
-    on(battleModalCloseBtn, 'click', closeBattleModal);
+    on(battleModalCloseBtn, 'click', closeBattleModal)
+
+    on(menuBtn, 'click', () => {openModal(menuModal); startPause()})
+
+    on(menuEndBtn, 'click', endGame)
+    on(menuResumeBtn, 'click', () => {closeModal(menuModal); endPause()})
 
     generateRegionNames();
 }

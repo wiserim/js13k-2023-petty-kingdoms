@@ -108,6 +108,7 @@ function enableSendArmy() {
     
     sendArmyFlag = 1;
     attr(map, 'data-send-army', 1);
+    c(regionSendArmyBtn, 'd-none');
     c(regionSendArmyCancelBtn, 'd-none', 1);
     for(let region of regions) {
         region === activeRegion || activeRegion.neighbours.has(region) ? attr(region.territory, 'data-target', 1) : 0
@@ -123,6 +124,7 @@ function enableSendArmy() {
 function disableSendArmy() {
     sendArmyFlag = 0;
     attr(map, 'data-send-army', 0);
+    c(regionSendArmyBtn, 'd-none', 1);
     c(regionSendArmyCancelBtn, 'd-none');
     for(let region of regions) {
         attr(region.territory, 'data-target', 0)

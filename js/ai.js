@@ -5,6 +5,10 @@
  * Start AI control for computer player. Invoked on start of turn.
  */
 function aiStart() {
+    if(pause) {
+        return;
+    }
+
     let p = activePlayer,
         regions = shuffle(p.regions);
 
@@ -52,6 +56,10 @@ function aiStart() {
  * End AI control for computer player.
  */
 function aiEnd() {
+    if(pause) {
+        return;
+    }
+    
     let p = activePlayer,
         regions = shuffle(p.regions)
 
