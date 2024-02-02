@@ -64,7 +64,7 @@
             /*player select*/
             .go-p {display: flex; flex-wrap:wrap; justify-content: center;}
             .go-p > div {flex: 0 0 25%; padding: .75rem; text-align: center;}
-            .go-p .btn {min-width: 120px;}
+            .go-p .btn {min-width: 160px;}
             #go-p1-btn:after {background: #AA0000}
             #go-p2-btn:after {background: #00AA00}
             #go-p3-btn:after {background: #0000AA}
@@ -123,8 +123,10 @@
                 #side-panel {height: auto; flex: auto}
             }
 
-            @media only screen and (max-width: 700px) {
+            @media only screen and (max-width: 850px) {
                 .go-p > div {flex: 0 0 50%;}
+                .go-p > div:nth-child(odd) {text-align: right;}
+                .go-p > div:nth-child(even) {text-align: left;}
             }
 
             @media only screen and (max-width: 500px) {
@@ -162,13 +164,13 @@
                                 <button id=go-p1-btn class=btn data-player=1>Player</button>
                             </div>
                             <div>
-                                <button id=go-p2-btn class=btn data-player=2>CPU</button>
+                                <button id=go-p2-btn class=btn data-player=2>CPU: easy</button>
                             </div>
                             <div>
-                                <button id=go-p3-btn class=btn data-player=2>CPU</button>
+                                <button id=go-p3-btn class=btn data-player=2>CPU: easy</button>
                             </div>
                             <div>
-                                <button id=go-p4-btn class=btn data-player=2>CPU</button>
+                                <button id=go-p4-btn class=btn data-player=2>CPU: easy</button>
                             </div>
                         </div>
                         <div class="t-center">

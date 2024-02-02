@@ -1,5 +1,15 @@
 # Change Log
 
+
+## Version 1.2.0
+
+### Updates
+
+* Added 3 CPU player's difficulty levels
+* UI tweaks.
+
+---
+
 ## Version 1.1.0 - 2023.12.30
 
 ### Features
@@ -10,7 +20,7 @@
 
 ### Updates
 
-* Slight tweaks to UI styling.
+* UI tweaks.
 
 ---
 

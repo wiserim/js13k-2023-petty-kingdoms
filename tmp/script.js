@@ -135,7 +135,8 @@ function toggleFullScreen() {
  * Update game options player button.
  */
 function updateGameOptionsPlayerBtn(el) {
-    let value = (attr(el, 'data-player') + 1) % 3;
+    let value = (parseInt(attr(el, 'data-player')) + 1) % 5;
+    console.log([value, attr(el, 'data-player')])
     attr(el, 'data-player', value);
 
     switch(value) {
@@ -146,7 +147,14 @@ function updateGameOptionsPlayerBtn(el) {
             txt(el, 'Player');
             break;
         case 2:
-            txt(el, 'CPU');
+            txt(el, 'CPU: easy');
+            break;
+        case 3:
+            txt(el, 'CPU: normal');
+            break;
+        case 4:
+            txt(el, 'CPU: hard');
+            break;
     }    
 }
 
