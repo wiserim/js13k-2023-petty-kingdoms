@@ -1,11 +1,11 @@
 # Change Log
 
 
-## Version 1.2.0
+## Version 1.2.0 - dev
 
 ### Updates
 
-* Added 3 CPU player's difficulty levels
+* Added 3 CPU player's difficulty levels.
 * UI tweaks.
 
 ---
