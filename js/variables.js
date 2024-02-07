@@ -403,6 +403,13 @@ let /**
     */
     pause = 0,
     /**
+    * @name pause
+    * @type {number}
+    * 
+    * Is game paused
+    */
+    aiAttackTimeout,
+    /**
     * @name activeRegion
     * @type {Region|null}
     * 

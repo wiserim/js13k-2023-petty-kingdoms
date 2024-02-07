@@ -20,7 +20,6 @@ function toggleFullScreen() {
  */
 function updateGameOptionsPlayerBtn(el) {
     let value = (parseInt(attr(el, 'data-player')) + 1) % 5;
-    console.log([value, attr(el, 'data-player')])
     attr(el, 'data-player', value);
 
     switch(value) {

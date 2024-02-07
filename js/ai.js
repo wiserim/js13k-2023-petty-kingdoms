@@ -5,7 +5,7 @@
  * Start AI control for computer player. Invoked on start of turn.
  */
 function aiStart() {
-    if(pause) {
+    if(pause || aiAttackTimeout) {
         return;
     }
 
@@ -38,8 +38,7 @@ function aiStart() {
                 sendArmy(neighbour);
                 return;
             }
-
-            setTimeout(() => {
+            aiAttackTimeout = setTimeout(() => {
                 aiAttack(neighbour, army);
             }, 500);
             return;
@@ -127,6 +126,8 @@ function aiAttack(region, army) {
     }
 
     updateRegionUi();
+
+    aiAttackTimeout = 0;
 
     aiEnd();
 }

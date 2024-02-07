@@ -21,7 +21,8 @@ function startGame() {
     for(let i = 0, iLenght = players.length; i < iLenght; i++) {
         let option = attr(gameOptionsPlayerBtns[i], 'data-player');
         players[i].active = option > 0;
-        players[i].ai = option > 1;
+        players[i].ai = option - 1;
+        players[i].gold = 10; 
 
         if(option > 0) {
             regions[i].owner = players[i];

@@ -136,7 +136,6 @@ function toggleFullScreen() {
  */
 function updateGameOptionsPlayerBtn(el) {
     let value = (parseInt(attr(el, 'data-player')) + 1) % 5;
-    console.log([value, attr(el, 'data-player')])
     attr(el, 'data-player', value);
 
     switch(value) {
@@ -154,7 +153,6 @@ function updateGameOptionsPlayerBtn(el) {
             break;
         case 4:
             txt(el, 'CPU: hard');
-            break;
     }    
 }
 
@@ -752,7 +750,7 @@ class Player {
  * Start AI control for computer player. Invoked on start of turn.
  */
 function aiStart() {
-    if(pause) {
+    if(pause || aiAttackTimeout) {
         return;
     }
 
@@ -785,8 +783,7 @@ function aiStart() {
                 sendArmy(neighbour);
                 return;
             }
-
-            setTimeout(() => {
+            aiAttackTimeout = setTimeout(() => {
                 aiAttack(neighbour, army);
             }, 500);
             return;
@@ -874,6 +871,8 @@ function aiAttack(region, army) {
     }
 
     updateRegionUi();
+
+    aiAttackTimeout = 0;
 
     aiEnd();
 }
@@ -1257,7 +1256,8 @@ function startGame() {
     for(let i = 0, iLenght = players.length; i < iLenght; i++) {
         let option = attr(gameOptionsPlayerBtns[i], 'data-player');
         players[i].active = option > 0;
-        players[i].ai = option > 1;
+        players[i].ai = option - 1;
+        players[i].gold = 10; 
 
         if(option > 0) {
             regions[i].owner = players[i];
@@ -1794,6 +1794,13 @@ let /**
     * Is game paused
     */
     pause = 0,
+    /**
+    * @name pause
+    * @type {number}
+    * 
+    * Is game paused
+    */
+    aiAttackTimeout,
     /**
     * @name activeRegion
     * @type {Region|null}

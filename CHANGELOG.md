@@ -5,8 +5,13 @@
 
 ### Updates
 
-* Added 3 CPU player's difficulty levels.
+* Added 3 AI difficulty levels.
 * UI tweaks.
+
+### Bub fixes
+
+* Players' starting gold isn't resetted on a new game.
+* Pausing game can sometimes cause AI player to attack twice.
 
 ---
 
