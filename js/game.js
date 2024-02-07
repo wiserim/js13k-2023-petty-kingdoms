@@ -121,6 +121,7 @@ function startPause() {
  */
 function endPause() {
     pause = 0;
+    aiAttackTimeout = 0;
 
     if(activePlayer.ai && players.filter(player => player.active).length > 1) {
         aiStart();

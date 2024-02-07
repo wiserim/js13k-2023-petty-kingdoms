@@ -403,10 +403,11 @@ let /**
     */
     pause = 0,
     /**
-    * @name pause
+    * @name aiAttackTimeout
     * @type {number}
     * 
-    * Is game paused
+    * AI attack timeout flag.
+    * Informs if AI timeout function is set.
     */
     aiAttackTimeout,
     /**
