@@ -38,6 +38,7 @@ function startGame() {
     c(sidePanel, 'disabled', 1);
     attr(map, 'data-player', activePlayer.id)
     updatePlayerUi();
+    updateRegionUi();
 
     if(activePlayer.ai) {
         aiStart();
@@ -121,7 +122,6 @@ function startPause() {
  */
 function endPause() {
     pause = 0;
-    aiAttackTimeout = 0;
 
     if(activePlayer.ai && players.filter(player => player.active).length > 1) {
         aiStart();

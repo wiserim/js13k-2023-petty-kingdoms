@@ -10,7 +10,9 @@ function aiStart() {
     }
 
     let p = activePlayer,
-        regions = shuffle(p.regions);
+        regions = shuffle(p.regions),
+        //Easy AI can use max 75% of their gold.
+        goldFactor = p.ai === 1 ? .75 : 1;
 
     //disable ui
     c(sidePanel, 'disabled');
@@ -25,20 +27,36 @@ function aiStart() {
             }
 
             //recruit
-            if(neighbour.army >= region.activeArmy) {
-                regionBuyArmyInput.value = Math.min(region.army - neighbour.army + 1, p.gold);
+            if(neighbour.army >= region.army) {
+                regionBuyArmyInput.value = Math.min(neighbour.army - region.army + rand(1, 5), Math.floor(p.gold * goldFactor));
                 recruit();
                 continue;
             }
 
+            if(neighbour.army > region.activeArmy || region.activeArmy < 2) {
+                continue;
+            }
+
             //attack
-            let army = Math.min(Math.max(neighbour.army + 10, neighbour.army * 1.3), region.activeArmy);
+            let army = neighbour.army - 1;
+            
+            if(p.ai == 1) {
+                army += rand(0, 4);
+            }
+            else {
+                army += rand(2, 6);
+            }
+
+            army = Math.min(Math.max(1, army), region.activeArmy - 1);
+
             if(neighbour.player && !neighbour.player.ai) {
                 regionSendArmyInput.value = army
                 sendArmy(neighbour);
                 return;
             }
+
             aiAttackTimeout = setTimeout(() => {
+                region.blockedArmy += army;
                 aiAttack(neighbour, army);
             }, 500);
             return;
@@ -60,9 +78,9 @@ function aiEnd() {
     }
 
     let p = activePlayer,
-        regions = shuffle(p.regions)
+        regions = shuffle(p.regions);
 
-    if(p.gold) {
+    if(p.ai > 1 && p.gold) {
         for(let region of regions) {
             let neighbours = region.neighbours.values();
 
@@ -95,6 +113,7 @@ function aiEnd() {
  */
 function aiAttack(region, army) {
     if(pause) {
+        aiAttackTimeout = 0;
         return;
     }
     
@@ -128,6 +147,6 @@ function aiAttack(region, army) {
     updateRegionUi();
 
     aiAttackTimeout = 0;
-
-    aiEnd();
+    //Hard AI can attack multiple times.
+    activePlayer.ai == 3 ? aiStart() : aiEnd();
 }

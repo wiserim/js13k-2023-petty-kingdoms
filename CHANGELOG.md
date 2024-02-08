@@ -8,9 +8,10 @@
 * Added 3 AI difficulty levels.
 * UI tweaks.
 
-### Bub fixes
+### Bug fixes
 
-* Players' starting gold isn't resetted on a new game.
+* Players' starting gold doesn't reset on at the start of the new game.
+* Selected region's info doesn't refresh at the start of the new game.
 * Pausing game can sometimes cause AI player to attack twice.
 
 ---
@@ -31,7 +32,7 @@
 
 ## Version 1.0.1 - 2023.09.13
 
-### Bub fixes
+### Bug fixes
 
 * `aiAttack` function doesn't subtract properly attacking army from region of origin.
 * `genetateMap` function sort `regionsPool` incorrectly.

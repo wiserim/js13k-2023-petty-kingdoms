@@ -371,7 +371,7 @@ let /**
     players = [
         new Player(1, 'Red Kingdom', '#AA0000'),
         new Player(2, 'Green Kingdom', '#00AA00'),
-        new Player(3, 'Blue Kigdom', '#0000AA'),
+        new Player(3, 'Blue Kingdom', '#0000AA'),
         new Player(4, 'Yellow Kingdom', '#FFFF00')
     ],
     /**
