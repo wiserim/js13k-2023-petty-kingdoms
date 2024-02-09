@@ -8,7 +8,17 @@ function init() {
     //add event listeners
     on(fullscreenBtn, 'click', toggleFullScreen)
 
-    on(startGameBtn, 'click', startGame);
+    on(startGameBtn, 'click', () => {
+        //count active players
+        if(gameOptionsPlayerBtns.filter((p) => attr(p, 'data-player') > 0).length > 1) {
+            startGame()
+        }
+        else {
+            openModal(infoModal, '<h3 class=t-center>Select 2 or more players.</h3>')
+        }
+
+    });
+
     for(let el of gameOptionsPlayerBtns) {
         on(el, 'click', () => updateGameOptionsPlayerBtn(el));
     }
@@ -24,14 +34,19 @@ function init() {
 
     on(endTurnBtn, 'click', endTurn)
 
-    on(gameEndBtn, 'click', endGame)
+    on(closeInfoModalBtn, 'click', () => {
+        closeModal(infoModal);
+        if(closeInfoModalCallback)
+            closeInfoModalCallback();
+        closeInfoModalCallback = null;
+    })
 
     on(battleModalCloseBtn, 'click', closeBattleModal)
 
     on(menuBtn, 'click', () => {openModal(menuModal); startPause()})
 
-    on(menuEndBtn, 'click', endGame)
-    on(menuRestartBtn, 'click', () => {closeModal(menuModal); startGame()});
+    on(menuEndBtn, 'click', () => {closeModal(menuModal); endGame()})
+    on(menuRestartBtn, 'click', () => {closeModal(menuModal); startGame()})
     on(menuResumeBtn, 'click', () => {closeModal(menuModal); endPause()})
 
     generateRegionNames();

@@ -236,19 +236,26 @@ let /**
     */
     menuResumeBtn = el('#menu-resume-btn'),
     /**
-    * @name gameEndModal
+    * @name infoModal
     * @type {HTMLElement}
     * 
-    * Game end modal
+    * General purpose info modal
     */
-    gameEndModal =  el('#game-end-modal'),
+    infoModal =  el('#info-modal'),
     /**
-    * @name gameEndBtn
+    * @name closeInfoModalBtn
     * @type {HTMLElement}
     * 
-    * Game end modal button
+    * General purpose info modal close button
     */
-    gameEndBtn = el('#game-end-btn'),
+    closeInfoModalBtn = el('#close-info-modal-btn'),
+    /**
+    * @name closeInfoModalCallback
+    * @type {function|null}
+    * 
+    * Closing info madal callback
+    */
+    closeInfoModalCallback = null,
     /**
     * @name battleModal
     * @type {HTMLElement}

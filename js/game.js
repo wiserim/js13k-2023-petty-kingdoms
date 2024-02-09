@@ -141,7 +141,8 @@ function checkWinCondition() {
     if(activePlayers.length > 1)
         return;
 
-    openModal(gameEndModal, `<h3 class=t-center>${activePlayers[0].name} wins!</h3>`)
+    openModal(infoModal, `<h3 class=t-center>${activePlayers[0].name} wins!</h3>`)
+    closeInfoModalCallback = endGame;
 }
 
 /**
@@ -151,8 +152,6 @@ function checkWinCondition() {
  * Ends game and shows menu screen.
  */
 function endGame() {
-    closeModal(gameEndModal)
-    closeModal(menuModal)
     c(menuScreen, 'd-none', 1)
     c(gameScreen, 'd-none')
 }

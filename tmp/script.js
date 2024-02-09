@@ -1395,7 +1395,8 @@ function checkWinCondition() {
     if(activePlayers.length > 1)
         return;
 
-    openModal(gameEndModal, `<h3 class=t-center>${activePlayers[0].name} wins!</h3>`)
+    openModal(infoModal, `<h3 class=t-center>${activePlayers[0].name} wins!</h3>`)
+    closeInfoModalCallback = endGame;
 }
 
 /**
@@ -1405,8 +1406,6 @@ function checkWinCondition() {
  * Ends game and shows menu screen.
  */
 function endGame() {
-    closeModal(gameEndModal)
-    closeModal(menuModal)
     c(menuScreen, 'd-none', 1)
     c(gameScreen, 'd-none')
 }
@@ -1648,19 +1647,26 @@ let /**
     */
     menuResumeBtn = el('#menu-resume-btn'),
     /**
-    * @name gameEndModal
+    * @name infoModal
     * @type {HTMLElement}
     * 
-    * Game end modal
+    * General purpose info modal
     */
-    gameEndModal =  el('#game-end-modal'),
+    infoModal =  el('#info-modal'),
     /**
-    * @name gameEndBtn
+    * @name closeInfoModalBtn
     * @type {HTMLElement}
     * 
-    * Game end modal button
+    * General purpose info modal close button
     */
-    gameEndBtn = el('#game-end-btn'),
+    closeInfoModalBtn = el('#close-info-modal-btn'),
+    /**
+    * @name closeInfoModalCallback
+    * @type {function|null}
+    * 
+    * Closing info madal callback
+    */
+    closeInfoModalCallback = null,
     /**
     * @name battleModal
     * @type {HTMLElement}
@@ -1846,7 +1852,17 @@ function init() {
     //add event listeners
     on(fullscreenBtn, 'click', toggleFullScreen)
 
-    on(startGameBtn, 'click', startGame);
+    on(startGameBtn, 'click', () => {
+        //count active players
+        if(gameOptionsPlayerBtns.filter((p) => attr(p, 'data-player') > 0).length > 1) {
+            startGame()
+        }
+        else {
+            openModal(infoModal, '<h3 class=t-center>Select 2 or more players.</h3>')
+        }
+
+    });
+
     for(let el of gameOptionsPlayerBtns) {
         on(el, 'click', () => updateGameOptionsPlayerBtn(el));
     }
@@ -1862,14 +1878,19 @@ function init() {
 
     on(endTurnBtn, 'click', endTurn)
 
-    on(gameEndBtn, 'click', endGame)
+    on(closeInfoModalBtn, 'click', () => {
+        closeModal(infoModal);
+        if(closeInfoModalCallback)
+            closeInfoModalCallback();
+        closeInfoModalCallback = null;
+    })
 
     on(battleModalCloseBtn, 'click', closeBattleModal)
 
     on(menuBtn, 'click', () => {openModal(menuModal); startPause()})
 
-    on(menuEndBtn, 'click', endGame)
-    on(menuRestartBtn, 'click', () => {closeModal(menuModal); startGame()});
+    on(menuEndBtn, 'click', () => {closeModal(menuModal); endGame()})
+    on(menuRestartBtn, 'click', () => {closeModal(menuModal); startGame()})
     on(menuResumeBtn, 'click', () => {closeModal(menuModal); endPause()})
 
     generateRegionNames();
