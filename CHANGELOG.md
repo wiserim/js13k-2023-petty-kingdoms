@@ -1,7 +1,7 @@
 # Change Log
 
 
-## Version 1.2.0 - dev
+## Version 1.2.0 - 2024.02.11
 
 ### Features
 
