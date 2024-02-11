@@ -236,19 +236,26 @@ let /**
     */
     menuResumeBtn = el('#menu-resume-btn'),
     /**
-    * @name gameEndModal
+    * @name infoModal
     * @type {HTMLElement}
     * 
-    * Game end modal
+    * General purpose info modal
     */
-    gameEndModal =  el('#game-end-modal'),
+    infoModal =  el('#info-modal'),
     /**
-    * @name gameEndBtn
+    * @name closeInfoModalBtn
     * @type {HTMLElement}
     * 
-    * Game end modal button
+    * General purpose info modal close button
     */
-    gameEndBtn = el('#game-end-btn'),
+    closeInfoModalBtn = el('#close-info-modal-btn'),
+    /**
+    * @name closeInfoModalCallback
+    * @type {function|null}
+    * 
+    * Closing info madal callback
+    */
+    closeInfoModalCallback = null,
     /**
     * @name battleModal
     * @type {HTMLElement}
@@ -371,7 +378,7 @@ let /**
     players = [
         new Player(1, 'Red Kingdom', '#AA0000'),
         new Player(2, 'Green Kingdom', '#00AA00'),
-        new Player(3, 'Blue Kigdom', '#0000AA'),
+        new Player(3, 'Blue Kingdom', '#0000AA'),
         new Player(4, 'Yellow Kingdom', '#FFFF00')
     ],
     /**
@@ -402,6 +409,14 @@ let /**
     * Is game paused
     */
     pause = 0,
+    /**
+    * @name aiAttackTimeout
+    * @type {number}
+    * 
+    * AI attack timeout flag.
+    * Informs if AI timeout function is set.
+    */
+    aiAttackTimeout,
     /**
     * @name activeRegion
     * @type {Region|null}

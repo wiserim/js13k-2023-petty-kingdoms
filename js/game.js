@@ -21,7 +21,8 @@ function startGame() {
     for(let i = 0, iLenght = players.length; i < iLenght; i++) {
         let option = attr(gameOptionsPlayerBtns[i], 'data-player');
         players[i].active = option > 0;
-        players[i].ai = option > 1;
+        players[i].ai = option - 1;
+        players[i].gold = 10; 
 
         if(option > 0) {
             regions[i].owner = players[i];
@@ -37,6 +38,7 @@ function startGame() {
     c(sidePanel, 'disabled', 1);
     attr(map, 'data-player', activePlayer.id)
     updatePlayerUi();
+    updateRegionUi();
 
     if(activePlayer.ai) {
         aiStart();
@@ -139,7 +141,8 @@ function checkWinCondition() {
     if(activePlayers.length > 1)
         return;
 
-    openModal(gameEndModal, `<h3 class=t-center>${activePlayers[0].name} wins!</h3>`)
+    openModal(infoModal, `<h3 class=t-center>${activePlayers[0].name} wins!</h3>`)
+    closeInfoModalCallback = endGame;
 }
 
 /**
@@ -149,8 +152,6 @@ function checkWinCondition() {
  * Ends game and shows menu screen.
  */
 function endGame() {
-    closeModal(gameEndModal)
-    closeModal(menuModal)
     c(menuScreen, 'd-none', 1)
     c(gameScreen, 'd-none')
 }

@@ -50,7 +50,7 @@
             #menu-screen p {margin: .5rem 0}
             #msm {display: flex; flex-direction: column; justify-content: center; align-items: center; flex: 1 0 auto}
             #msf {padding: 1rem}
-            #toggle-fullscreen {width: 30px; height: 30px; background: transparent; position: fixed; bottom: 15px; right: 15px; z-index:2}
+            #toggle-fullscreen {width: 30px; height: 30px; background: transparent; position: fixed; bottom: 15px; right: 15px; z-index:2; cursor: pointer}
             #game-screen {display: grid; grid-template-columns: 1fr 400; grid-template-rows: 60px 1fr; width: min(100vw, calc(100vh + 400px)); margin: auto}
             #map-section {display: flex; align-items: center; grid-column: 1; grid-row: 1 / span 2;}
             #menu-section {grid-column: 2; grid-row: 1; justify-content: flex-end; padding: .5rem;}
@@ -64,7 +64,7 @@
             /*player select*/
             .go-p {display: flex; flex-wrap:wrap; justify-content: center;}
             .go-p > div {flex: 0 0 25%; padding: .75rem; text-align: center;}
-            .go-p .btn {min-width: 120px;}
+            .go-p .btn {min-width: 160px;}
             #go-p1-btn:after {background: #AA0000}
             #go-p2-btn:after {background: #00AA00}
             #go-p3-btn:after {background: #0000AA}
@@ -123,8 +123,10 @@
                 #side-panel {height: auto; flex: auto}
             }
 
-            @media only screen and (max-width: 700px) {
+            @media only screen and (max-width: 850px) {
                 .go-p > div {flex: 0 0 50%;}
+                .go-p > div:nth-child(odd) {text-align: right;}
+                .go-p > div:nth-child(even) {text-align: left;}
             }
 
             @media only screen and (max-width: 500px) {
@@ -162,13 +164,13 @@
                                 <button id=go-p1-btn class=btn data-player=1>Player</button>
                             </div>
                             <div>
-                                <button id=go-p2-btn class=btn data-player=2>CPU</button>
+                                <button id=go-p2-btn class=btn data-player=2>CPU: easy</button>
                             </div>
                             <div>
-                                <button id=go-p3-btn class=btn data-player=2>CPU</button>
+                                <button id=go-p3-btn class=btn data-player=2>CPU: easy</button>
                             </div>
                             <div>
-                                <button id=go-p4-btn class=btn data-player=2>CPU</button>
+                                <button id=go-p4-btn class=btn data-player=2>CPU: easy</button>
                             </div>
                         </div>
                         <div class="t-center">
@@ -261,16 +263,16 @@
             </div>
         </div>
         <!--menu modal end-->
-        <!--game end modal-->
-        <div id=game-end-modal class="modal t-center">
+        <!--info-modal-->
+        <div id=info-modal class="modal t-center">
             <div class="modal-body">
                 <div class="modal-content"></div>
                 <div>
-                    <button id=game-end-btn class=btn>Main menu</button>
+                    <button id=close-info-modal-btn class=btn>Close</button>
                 </div>
             </div>
         </div>
-        <!--game end modal end-->
+        <!--info modal end-->
         <!--battle modal-->
         <div id=battle-modal class="modal">
             <div class="modal-body">

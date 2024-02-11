@@ -135,7 +135,7 @@ function toggleFullScreen() {
  * Update game options player button.
  */
 function updateGameOptionsPlayerBtn(el) {
-    let value = (attr(el, 'data-player') + 1) % 3;
+    let value = (parseInt(attr(el, 'data-player')) + 1) % 5;
     attr(el, 'data-player', value);
 
     switch(value) {
@@ -146,7 +146,13 @@ function updateGameOptionsPlayerBtn(el) {
             txt(el, 'Player');
             break;
         case 2:
-            txt(el, 'CPU');
+            txt(el, 'CPU: easy');
+            break;
+        case 3:
+            txt(el, 'CPU: normal');
+            break;
+        case 4:
+            txt(el, 'CPU: hard');
     }    
 }
 
@@ -744,12 +750,14 @@ class Player {
  * Start AI control for computer player. Invoked on start of turn.
  */
 function aiStart() {
-    if(pause) {
+    if(pause || aiAttackTimeout) {
         return;
     }
 
     let p = activePlayer,
-        regions = shuffle(p.regions);
+        regions = shuffle(p.regions),
+        //Easy AI can use max 75% of their gold.
+        goldFactor = p.ai === 1 ? .75 : 1;
 
     //disable ui
     c(sidePanel, 'disabled');
@@ -764,21 +772,36 @@ function aiStart() {
             }
 
             //recruit
-            if(neighbour.army >= region.activeArmy) {
-                regionBuyArmyInput.value = Math.min(region.army - neighbour.army + 1, p.gold);
+            if(neighbour.army >= region.army) {
+                regionBuyArmyInput.value = Math.min(neighbour.army - region.army + rand(1, 5), Math.floor(p.gold * goldFactor));
                 recruit();
                 continue;
             }
 
+            if(neighbour.army > region.activeArmy || region.activeArmy < 2) {
+                continue;
+            }
+
             //attack
-            let army = Math.min(Math.max(neighbour.army + 10, neighbour.army * 1.3), region.activeArmy);
+            let army = neighbour.army - 1;
+            
+            if(p.ai == 1) {
+                army += rand(0, 4);
+            }
+            else {
+                army += rand(2, 6);
+            }
+
+            army = Math.min(Math.max(1, army), region.activeArmy - 1);
+
             if(neighbour.player && !neighbour.player.ai) {
                 regionSendArmyInput.value = army
                 sendArmy(neighbour);
                 return;
             }
 
-            setTimeout(() => {
+            aiAttackTimeout = setTimeout(() => {
+                region.blockedArmy += army;
                 aiAttack(neighbour, army);
             }, 500);
             return;
@@ -798,11 +821,11 @@ function aiEnd() {
     if(pause) {
         return;
     }
-    
-    let p = activePlayer,
-        regions = shuffle(p.regions)
 
-    if(p.gold) {
+    let p = activePlayer,
+        regions = shuffle(p.regions);
+
+    if(p.ai > 1 && p.gold) {
         for(let region of regions) {
             let neighbours = region.neighbours.values();
 
@@ -834,6 +857,11 @@ function aiEnd() {
  * @param {number} army - Attacking army size
  */
 function aiAttack(region, army) {
+    if(pause) {
+        aiAttackTimeout = 0;
+        return;
+    }
+    
     let defArmy = region.army,
     defPlayer = region.player,
     attFactor = rand(1, 6),
@@ -863,7 +891,9 @@ function aiAttack(region, army) {
 
     updateRegionUi();
 
-    aiEnd();
+    aiAttackTimeout = 0;
+    //Hard AI can attack multiple times.
+    activePlayer.ai == 3 ? aiStart() : aiEnd();
 }
 /**
  * @function
@@ -1245,7 +1275,8 @@ function startGame() {
     for(let i = 0, iLenght = players.length; i < iLenght; i++) {
         let option = attr(gameOptionsPlayerBtns[i], 'data-player');
         players[i].active = option > 0;
-        players[i].ai = option > 1;
+        players[i].ai = option - 1;
+        players[i].gold = 10; 
 
         if(option > 0) {
             regions[i].owner = players[i];
@@ -1261,6 +1292,7 @@ function startGame() {
     c(sidePanel, 'disabled', 1);
     attr(map, 'data-player', activePlayer.id)
     updatePlayerUi();
+    updateRegionUi();
 
     if(activePlayer.ai) {
         aiStart();
@@ -1363,7 +1395,8 @@ function checkWinCondition() {
     if(activePlayers.length > 1)
         return;
 
-    openModal(gameEndModal, `<h3 class=t-center>${activePlayers[0].name} wins!</h3>`)
+    openModal(infoModal, `<h3 class=t-center>${activePlayers[0].name} wins!</h3>`)
+    closeInfoModalCallback = endGame;
 }
 
 /**
@@ -1373,8 +1406,6 @@ function checkWinCondition() {
  * Ends game and shows menu screen.
  */
 function endGame() {
-    closeModal(gameEndModal)
-    closeModal(menuModal)
     c(menuScreen, 'd-none', 1)
     c(gameScreen, 'd-none')
 }
@@ -1616,19 +1647,26 @@ let /**
     */
     menuResumeBtn = el('#menu-resume-btn'),
     /**
-    * @name gameEndModal
+    * @name infoModal
     * @type {HTMLElement}
     * 
-    * Game end modal
+    * General purpose info modal
     */
-    gameEndModal =  el('#game-end-modal'),
+    infoModal =  el('#info-modal'),
     /**
-    * @name gameEndBtn
+    * @name closeInfoModalBtn
     * @type {HTMLElement}
     * 
-    * Game end modal button
+    * General purpose info modal close button
     */
-    gameEndBtn = el('#game-end-btn'),
+    closeInfoModalBtn = el('#close-info-modal-btn'),
+    /**
+    * @name closeInfoModalCallback
+    * @type {function|null}
+    * 
+    * Closing info madal callback
+    */
+    closeInfoModalCallback = null,
     /**
     * @name battleModal
     * @type {HTMLElement}
@@ -1751,7 +1789,7 @@ let /**
     players = [
         new Player(1, 'Red Kingdom', '#AA0000'),
         new Player(2, 'Green Kingdom', '#00AA00'),
-        new Player(3, 'Blue Kigdom', '#0000AA'),
+        new Player(3, 'Blue Kingdom', '#0000AA'),
         new Player(4, 'Yellow Kingdom', '#FFFF00')
     ],
     /**
@@ -1783,6 +1821,14 @@ let /**
     */
     pause = 0,
     /**
+    * @name aiAttackTimeout
+    * @type {number}
+    * 
+    * AI attack timeout flag.
+    * Informs if AI timeout function is set.
+    */
+    aiAttackTimeout,
+    /**
     * @name activeRegion
     * @type {Region|null}
     * 
@@ -1806,7 +1852,17 @@ function init() {
     //add event listeners
     on(fullscreenBtn, 'click', toggleFullScreen)
 
-    on(startGameBtn, 'click', startGame);
+    on(startGameBtn, 'click', () => {
+        //count active players
+        if(gameOptionsPlayerBtns.filter((p) => attr(p, 'data-player') > 0).length > 1) {
+            startGame()
+        }
+        else {
+            openModal(infoModal, '<h3 class=t-center>Select 2 or more players.</h3>')
+        }
+
+    });
+
     for(let el of gameOptionsPlayerBtns) {
         on(el, 'click', () => updateGameOptionsPlayerBtn(el));
     }
@@ -1822,14 +1878,19 @@ function init() {
 
     on(endTurnBtn, 'click', endTurn)
 
-    on(gameEndBtn, 'click', endGame)
+    on(closeInfoModalBtn, 'click', () => {
+        closeModal(infoModal);
+        if(closeInfoModalCallback)
+            closeInfoModalCallback();
+        closeInfoModalCallback = null;
+    })
 
     on(battleModalCloseBtn, 'click', closeBattleModal)
 
     on(menuBtn, 'click', () => {openModal(menuModal); startPause()})
 
-    on(menuEndBtn, 'click', endGame)
-    on(menuRestartBtn, 'click', () => {closeModal(menuModal); startGame()});
+    on(menuEndBtn, 'click', () => {closeModal(menuModal); endGame()})
+    on(menuRestartBtn, 'click', () => {closeModal(menuModal); startGame()})
     on(menuResumeBtn, 'click', () => {closeModal(menuModal); endPause()})
 
     generateRegionNames();
